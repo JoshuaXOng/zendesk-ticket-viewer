@@ -53,18 +53,20 @@ class Display():
     def _exec_view_all_tickets_option(self):
         """ The logic for the view all tickets option. """
         try:
-            tickets = self.zendeskController.fetchAllTickets()
+            page_no = 0
+            has_next_page = True
+            while has_next_page:
+                if not Utils.inputOneOrZero("\nNext page of tickets (yes: 1 / no: 0)? "): 
+                    break
+                page_no += 1
+                tickets, has_next_page = self.zendeskController.fetchPageOfTickets(page_no)
+                self._printTicketsOverview(tickets)
+                print("Page "+str(page_no)+", "+str(len(tickets))+" tickets on this page")
+                
         except requests.exceptions.HTTPError as e:
             print(e)
         except requests.exceptions.RequestException:
             print("Zendesk API is unavailable")
-        else:                
-            print("\nYou have "+str(len(tickets))+" tickets.")
-            for page_no, page_of_tickets in enumerate(Utils.paginateData(tickets),1):
-                self._printTicketsOverview(page_of_tickets)
-                print("Page "+str(page_no)+", "+str(len(page_of_tickets))+" tickets on this page")
-                show_next = Utils.inputOneOrZero("\nNext page of tickets (yes: 1 / no: 0)?\n")
-                if not show_next: break
 
     def _exec_view_ticket_of_id_option(self):
         """ The logic for the view ticket of if option. """
