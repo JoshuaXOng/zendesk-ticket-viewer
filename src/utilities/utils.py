@@ -52,14 +52,4 @@ class Utils():
                 print("Please enter a 0 or a 1") 
         return input_
 
-    @staticmethod
-    def paginateData(lst: list) -> list:
-        """ Returns a portion of the supplied list. """
-        no_items = 25
-        for start in range(0,len(lst),no_items):
-            end = start+no_items
-            try:
-                items_on_page = lst[start:end]
-            except IndexError:
-                items_on_page = lst[start:]
-            yield items_on_page
+
