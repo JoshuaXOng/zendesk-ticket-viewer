@@ -48,7 +48,6 @@ class ZendeskController():
         count = response_json["count"]["value"]
         return count
 
-
     def fetchAllTickets(self) -> [Ticket]:
         """ Returns the tickets from sending a get request to Zendesk API's tickets endpoint.
         :raises HTTPError: if the request encounters a 404, 401, etc. type error
