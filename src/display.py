@@ -52,16 +52,22 @@ class Display():
 
     def _exec_view_all_tickets_option(self):
         """ The logic for the view all tickets option. """
+        
         try:
-            page_no = 0
-            has_next_page = True
-            while has_next_page:
-                if not Utils.inputOneOrZero("\nNext page of tickets (yes: 1 / no: 0)? "): 
-                    break
-                page_no += 1
-                tickets, has_next_page = self.zendeskController.fetchPageOfTickets(page_no)
-                self._printTicketsOverview(tickets)
-                print("Page "+str(page_no)+", "+str(len(tickets))+" tickets on this page")
+            ticket_count = self.zendeskController.fetchTicketCount()
+            print("\nYou have "+str(ticket_count)+" tickets.")
+            if ticket_count:
+                page_no = 0
+                has_next_page = True
+                while has_next_page:
+                    if page_no > 0: 
+                        if not Utils.inputOneOrZero("\nNext page of tickets (yes: 1 / no: 0)? "): break
+                    page_no += 1
+                    tickets, has_next_page = self.zendeskController.fetchPageOfTickets(page_no)
+                    self._printTicketsOverview(tickets)
+                    print("Page "+str(page_no)+", "+str(len(tickets))+" tickets on this page")
+            else:
+                print("You have no tickets...")
                 
         except requests.exceptions.HTTPError as e:
             print(e)
