@@ -14,3 +14,6 @@ class Ticket():
         except KeyError as e:
             #e.message... raise 
             raise KeyError("Ticket could not get decoded properly - perhaps data is malformed.")
+
+    def __str__(self) -> str: 
+        return str(self.id)+" || "+self.status+" || "+str(self.requester_id)+" || "+self.created_at+" || "+self.subject+" || "+self.description
