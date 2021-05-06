@@ -1,4 +1,7 @@
 
+from datetime import datetime
+from utilities.utils import Utils
+
 class Ticket():
     """ Represents a Zendesk ticket. """
 
@@ -17,6 +20,27 @@ class Ticket():
             self.description = data["description"]
         except KeyError as e:
             raise KeyError("Ticket could not get decoded properly - perhaps data is malformed.")
+
+    def overview(self) -> str:
+        """ Prints an overview of the ticket's details. """
+        output = "|| ID: {id_}, Status: {status} || Subject: {sub} || Requested at: {date_req}"
+        subject = Utils.resizeString(self.subject)
+        try:
+            creation_date = datetime.strptime(self.created_at, "%Y-%m-%dT%H:%M:%SZ").strftime("%d %b %Y %H:%M:%S")
+        except:
+            creation_date = self.created_at
+        formatted_output = output.format(id_=self.id, status=self.status, sub=subject, date_req=creation_date)
+        return formatted_output
+
+    def indepth(self) -> str:
+        """ Prints an indepth look of the ticket's details. """
+        output = "|| ID: {id_}, Status: {status} || Subject: {sub} || Requested at: {date_req} || Requested by: {req_id}\n\n{desc}"
+        try:
+            creation_date = datetime.strptime(self.created_at, "%Y-%m-%dT%H:%M:%SZ").strftime("%d %b %Y %H:%M:%S")
+        except:
+            creation_date = self.created_at
+        formatted_output = output.format(id_=self.id, status=self.status, sub=self.subject, date_req=creation_date, req_id=self.requester_id, desc=self.description)
+        return formatted_output
 
     def __str__(self) -> str: 
         return str(self.id)+" || "+self.status+" || "+str(self.requester_id)+" || "+self.created_at+" || "+self.subject+" || "+self.description
