@@ -28,6 +28,7 @@ class Utils():
 
     @staticmethod
     def inputValidInt(message: str) -> int:
+        """ Prompts the user for a valid integer. """
         isValid = False
         while not isValid:
             try:
@@ -39,6 +40,7 @@ class Utils():
 
     @staticmethod
     def inputOneOrZero(message: str) -> int:
+        """ Prompts the user for the integers 0 or 1. """
         isValid = False
         while not isValid:
             try:
@@ -52,6 +54,7 @@ class Utils():
 
     @staticmethod
     def paginateData(lst: list) -> list:
+        """ Returns a portion of the supplied list. """
         no_items = 25
         for start in range(0,len(lst),no_items):
             end = start+no_items
