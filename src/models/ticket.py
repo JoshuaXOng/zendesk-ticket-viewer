@@ -1,9 +1,13 @@
 
 class Ticket():
-    """ Represents a Zendesk ticket.
-    """
+    """ Represents a Zendesk ticket. """
 
     def __init__(self, data: dict):
+        """ Constructor.
+        Decodes JSON data into a Zendesk ticket.
+        :param data: JSON formatted data
+        :raises KeyError: if id, status, ..., description keys are not found in data
+        """
         try:
             self.id = data["id"] 
             self.status = data["status"]
@@ -12,7 +16,6 @@ class Ticket():
             self.requester_id = data["requester_id"]
             self.description = data["description"]
         except KeyError as e:
-            #e.message... raise 
             raise KeyError("Ticket could not get decoded properly - perhaps data is malformed.")
 
     def __str__(self) -> str: 
