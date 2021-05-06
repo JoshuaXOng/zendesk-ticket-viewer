@@ -1,6 +1,7 @@
 from display import Display
 
 class Application():
+    """ The entry point of the ticket viewer application. """
 
     @staticmethod
     def main():
