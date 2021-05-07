@@ -1,14 +1,17 @@
 from datetime import datetime
-from utilities.utils import Utils
+from typing import TypeVar, Generic
+from utilities.stringutils import StringUtils
 
-class Ticket():
+T = TypeVar("T")
+
+class Ticket(Generic[T]):
     """ Represents a Zendesk ticket. """
 
-    def __init__(self, data: dict):
+    def __init__(self, data: dict[str,T]):
         """ Constructor.
         Decodes JSON data into a Zendesk ticket.
-        :param data: JSON formatted data
-        :raises KeyError: if id, status, ..., description keys are not found in data
+        :param data: JSON formatted data of a Zendesk ticket.
+        :raises KeyError: if id, status, subject, created_at, requester_id and description keys are not found in data.
         """
         try:
             self.id = data["id"] 
@@ -18,12 +21,12 @@ class Ticket():
             self.requester_id = data["requester_id"]
             self.description = data["description"]
         except KeyError as e:
-            raise KeyError("Ticket could not get decoded properly - perhaps data is malformed.")
+            raise KeyError("Ticket could not get decoded properly.")
 
     def overview(self) -> str:
-        """ Prints an overview of the ticket's details. """
+        """ Returns an overview of the ticket's details. """
         output = "|| ID: {id_}, Status: {status} || Subject: {sub} || Requested at: {date_req}"
-        subject = Utils.resizeString(self.subject)
+        subject = StringUtils.resizeString(self.subject, 30)
         try:
             creation_date = datetime.strptime(self.created_at, "%Y-%m-%dT%H:%M:%SZ").strftime("%d %b %Y %H:%M:%S")
         except:
@@ -32,7 +35,7 @@ class Ticket():
         return formatted_output
 
     def indepth(self) -> str:
-        """ Prints an indepth look of the ticket's details. """
+        """ Returns an indepth look of the ticket's details. """
         output = "|| ID: {id_}, Status: {status} || Subject: {sub} || Requested at: {date_req} || Requested by: {req_id}\n\n{desc}"
         try:
             creation_date = datetime.strptime(self.created_at, "%Y-%m-%dT%H:%M:%SZ").strftime("%d %b %Y %H:%M:%S")
