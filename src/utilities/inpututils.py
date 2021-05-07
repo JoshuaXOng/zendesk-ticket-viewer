@@ -50,5 +50,5 @@ class InputUtils():
                     raise ValueError 
                 isValid = True
             except ValueError:
-                print("Please enter a 0 or a 1") 
+                print("Please enter a 0 or a 1.") 
         return input_
