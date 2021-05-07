@@ -1,6 +1,6 @@
 from database.zendeskcontroller import ZendeskController
 from models.ticket import Ticket
-from utilities.utils import Utils
+from utilities.inpututils import InputUtils
 import requests
 
 class Display():
@@ -30,53 +30,71 @@ class Display():
                 """
             )
 
-            command = self._promptOptionSelection(options) 
+            prompt = "Select thou option: "
+            err_msg = "Please select an existing option from the table."
+            command = InputUtils.inputOption(options, prompt, err_msg)
 
             if command == view_all_tickets:
                 self._exec_view_all_tickets_option()
             elif command == view_ticket_of_id:
                 self._exec_view_ticket_of_id_option()
-    
-    def _promptOptionSelection(self, options: [int]) -> int:
-        """ Prompts the user to select on of the supplied options. """
-        isValid = False
-        while not isValid:
-            try:
-                command = int(input("Select thou option: "))
-                if command not in options:
-                    raise 
-                isValid = True
-            except:
-                print("Please select an existing option from the table.") 
-        return command
 
     def _exec_view_all_tickets_option(self):
         """ The logic for the view all tickets option. """
-        
-        try:
+
+        try: 
             ticket_count = self.zendeskController.fetchTicketCount()
-            print("\nYou have "+str(ticket_count)+" tickets.")
-            if ticket_count:
-                page_no = 0
-                has_next_page = True
-                while has_next_page:
-                    if page_no > 0: 
-                        if not Utils.inputOneOrZero("\nNext page of tickets (yes: 1 / no: 0)? "): break
-                    page_no += 1
-                    tickets, has_next_page = self.zendeskController.fetchPageOfTickets(page_no)
-                    self._printTicketsOverview(tickets)
-                    print("Page "+str(page_no)+", "+str(len(tickets))+" tickets on this page")
-            else:
-                print("You have no tickets...")
-                
+            page_no = 1
+            tickets, has_prev_page, has_next_page = self.zendeskController.fetchPageOfTickets(page_no)
         except requests.exceptions.HTTPError as e:
             print(e)
+            return
         except requests.exceptions.RequestException:
             print("Zendesk API is unavailable")
+            return
+
+        if not ticket_count: 
+            print("You have no tickets...")
+            return
+        
+        isPaging = True
+        while isPaging and (has_prev_page or has_next_page):
+            
+            print("\nYou have "+str(ticket_count)+" total tickets.")
+            self._printTicketsOverview(tickets)
+            print("Page "+str(page_no)+", "+str(len(tickets))+" tickets on this page")
+
+            exit_paging = 0 
+            prev = 1
+            next_ = 2
+            paging_options = [exit_paging]
+            if has_prev_page:
+                paging_options.append(prev)
+                print("Select 1 to page back.")
+            if has_next_page:
+                paging_options.append(next_)
+                print("Select 2 to page forward.")
+            
+            paging_option = InputUtils.inputOption(paging_options, "\nEnter a navigation option (or 0 to quit): ", "Please select a valid option.")
+            try:
+                if paging_option == exit_paging:
+                    break
+                elif paging_option == prev:
+                    page_no -= 1
+                    tickets, has_prev_page, has_next_page = self.zendeskController.fetchPageOfTickets(page_no)
+                elif paging_option == next_:
+                    page_no += 1
+                    tickets, has_prev_page, has_next_page = self.zendeskController.fetchPageOfTickets(page_no)
+            except requests.exceptions.HTTPError as e:
+                print(e)
+                return
+            except requests.exceptions.RequestException:
+                print("Zendesk API is unavailable")
+                return
 
     def _exec_view_ticket_of_id_option(self):
-        """ The logic for the view ticket of if option. """
-        id_ = Utils.inputValidInt("Select thou id: ")   
+        """ The logic for the view ticket of id option. """
+        id_ = InputUtils.inputValidInt("Select thou id: ")   
         try:
             ticket = self.zendeskController.fetchTicketWithID(id_)
         except requests.exceptions.HTTPError as e:
@@ -87,6 +105,6 @@ class Display():
             print("\n"+ticket.indepth())
 
     def _printTicketsOverview(self, tickets: [Ticket]):
-        """ Prints the supplied list of tickets in a decent manner. """
+        """ Prints the overviews of the supplied list of tickets. """
         for ticket in tickets:
             print(ticket.overview())
