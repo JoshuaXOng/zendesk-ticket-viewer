@@ -10,13 +10,13 @@ class InputUtils():
         :param err_msg: the message that is to be displayed upon invalid input. 
         :return: the option selected by the user. 
         """
-        isValid = False
-        while not isValid:
+        is_valid = False
+        while not is_valid:
             try:
                 command = int(input(prompt))
                 if command not in options:
                     raise 
-                isValid = True
+                is_valid = True
             except:
                 print(err_msg) 
         return command
@@ -27,11 +27,11 @@ class InputUtils():
         :param message: the prompting message that is displayed to the user.
         :return: the integer selected by the user.
         """
-        isValid = False
-        while not isValid:
+        is_valid = False
+        while not is_valid:
             try:
                 input_ = int(input(message))
-                isValid = True
+                is_valid = True
             except ValueError as e:
                 print(e) 
         return input_
@@ -42,13 +42,13 @@ class InputUtils():
         :message: the prompting message that is displayed to the user.
         :return: 0 or 1 depending on user selection.
         """
-        isValid = False
-        while not isValid:
+        is_valid = False
+        while not is_valid:
             try:
                 input_ = int(input(message))
                 if not input_ == 0 and not input_ == 1:
                     raise ValueError 
-                isValid = True
+                is_valid = True
             except ValueError:
                 print("Please enter a 0 or a 1.") 
         return input_
