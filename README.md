@@ -18,3 +18,8 @@ A simple CLI ticket viewer for Zendesk tickets.
 
 5. Run all the tests, `python tests\tester.py`
 
+## Features
+
+- An option to browse all the tickets associated with the account JoshuaXOng
+    - Page back and forth through all tickets
+- Retrieve indepth details of a specific ticket
