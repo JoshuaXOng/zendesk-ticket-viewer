@@ -57,8 +57,9 @@ class Display():
             print("You have no tickets...")
             return
         
-        isPaging = True
-        while isPaging and (has_prev_page or has_next_page):
+        do = True
+        while do or (has_prev_page or has_next_page):
+            do = False
             
             print("\nYou have "+str(ticket_count)+" total tickets.")
             self._printTicketsOverview(tickets)
@@ -74,8 +75,9 @@ class Display():
             if has_next_page:
                 paging_options.append(next_)
                 print("Select 2 to page forward.")
+            print("Select 0 to quit.")
             
-            paging_option = InputUtils.inputOption(paging_options, "\nEnter a navigation option (or 0 to quit): ", "Please select a valid option.")
+            paging_option = InputUtils.inputOption(paging_options, "\nEnter a navigation option: ", "Please select a valid option.")
             try:
                 if paging_option == exit_paging:
                     break
