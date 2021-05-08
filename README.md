@@ -9,11 +9,20 @@ A simple CLI ticket viewer for Zendesk tickets.
 
 ### Instructions
 1. Clone the repo
+
 ```git clone https://github.com/JoshuaXOng/zendesk-ticket-viewer.git```
+
 2. Cd into the zendesk-ticket-view directory
+
 3. Install the ```requests``` Python library
+
 ```pip install requests```
+
 4. Run the application
+
 ```python src\application.py```
+
 5. Run all the tests
+
 ```python tests\tester.py```
+
