@@ -7,11 +7,11 @@ T = TypeVar("T")
 class Ticket(Generic[T]):
     """ Represents a Zendesk ticket. """
 
-    def __init__(self, data: Dict[str,T]):
+    def __init__(self, data: Dict[str, T]):
         """ Constructor.
         Decodes JSON data into a Zendesk ticket.
         :param data: JSON formatted data of a Zendesk ticket.
-        :raises KeyError: if id, status, subject, created_at, requester_id and description keys are not found in data.
+        :raises KeyError: if id, status, subject, created_at, requester_id or description keys are not found in data.
         """
         try:
             self.id = data["id"] 
@@ -20,7 +20,7 @@ class Ticket(Generic[T]):
             self.created_at = data["created_at"]
             self.requester_id = data["requester_id"]
             self.description = data["description"]
-        except KeyError as e:
+        except KeyError:
             raise KeyError("Ticket could not get decoded properly.")
 
     def overview(self) -> str:

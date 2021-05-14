@@ -43,6 +43,7 @@ class Display():
     def _execViewAllTicketsOption(self):
         """ The logic for the view all tickets option. """
 
+        # If account has tickets, fetch tickets on first page.
         try: 
             ticket_count = self.zendesk_controller.fetchTicketCount()
             page_no = 1
@@ -58,6 +59,7 @@ class Display():
             print("You have no tickets...")
             return
         
+        # Display tickets on page and enter/show pagination controls.
         do = True
         while do or (has_prev_page or has_next_page):
             do = False

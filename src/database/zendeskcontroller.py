@@ -10,7 +10,7 @@ class ZendeskController():
         self.password = "4gPQcPElcbFL02aqvbvTcxSzKm62oUZRuUuKPHmr"
 
     def fetchPageOfTickets(self, page_no: int) -> Tuple[List[Ticket], bool, bool]:
-        """ Returns the tickets on a specific page and checks whether there is a next page. 
+        """ Returns the tickets on a specific page and checks whether there is are previous/next pages. 
         :param page_no: the page number 1-indexed of the page of tickets.
         :raises HTTPError: if a http error is encountered in the request, i.e. 401, 404, etc.
         :raises RequestException: a catch all exception for a request.

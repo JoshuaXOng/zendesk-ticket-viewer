@@ -16,7 +16,7 @@ class InputUtils():
             try:
                 command = int(input(prompt))
                 if command not in options:
-                    raise 
+                    raise Exception()
                 is_valid = True
             except:
                 print(err_msg) 

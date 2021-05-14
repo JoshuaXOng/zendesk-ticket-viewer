@@ -1,5 +1,5 @@
 import sys, os
-sys.path.insert(0,os.path.abspath('.\src'))
+sys.path.insert(0, os.path.abspath('.\src'))
 import unittest
 from models.ticket import Ticket
 from utilities.stringutils import StringUtils
