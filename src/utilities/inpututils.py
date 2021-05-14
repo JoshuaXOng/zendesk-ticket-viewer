@@ -1,9 +1,10 @@
+from typing import List
 
 class InputUtils():
     """ Contains various handy functions that relate to retrieving user input. """
 
     @staticmethod
-    def inputOption(options: [int], prompt: str, err_msg: str) -> int:
+    def inputOption(options: List[int], prompt: str, err_msg: str) -> int:
         """ Prompts the user to select an option contained within the supplied options. 
         :param options: the list of integer options that the user is able to select.
         :param prompt: the prompting message that is to be displayed to the user.

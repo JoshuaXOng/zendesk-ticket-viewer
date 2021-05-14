@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import TypeVar, Generic
+from typing import TypeVar, Generic, Dict
 from utilities.stringutils import StringUtils
 
 T = TypeVar("T")
@@ -7,7 +7,7 @@ T = TypeVar("T")
 class Ticket(Generic[T]):
     """ Represents a Zendesk ticket. """
 
-    def __init__(self, data: dict[str,T]):
+    def __init__(self, data: Dict[str,T]):
         """ Constructor.
         Decodes JSON data into a Zendesk ticket.
         :param data: JSON formatted data of a Zendesk ticket.

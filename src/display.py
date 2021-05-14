@@ -2,6 +2,7 @@ from database.zendeskcontroller import ZendeskController
 from models.ticket import Ticket
 from utilities.inpututils import InputUtils
 import requests
+from typing import List
 
 class Display():
     """ Contains the visuals and logic in which the user is to interact with the system. """
@@ -106,7 +107,7 @@ class Display():
         else: 
             print("\n"+ticket.indepth())
 
-    def _printTicketsOverview(self, tickets: [Ticket]):
+    def _printTicketsOverview(self, tickets: List[Ticket]):
         """ Prints the overviews of the supplied list of tickets. """
         for ticket in tickets:
             print(ticket.overview())

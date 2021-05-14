@@ -1,5 +1,6 @@
 import requests
 from models.ticket import Ticket
+from typing import List, Tuple
 
 class ZendeskController():
     """ Medaites the retreval and return of JSON data from Zendesk API. """
@@ -8,7 +9,7 @@ class ZendeskController():
         self.username = "joshuaong2000@gmail.com/token"
         self.password = "4gPQcPElcbFL02aqvbvTcxSzKm62oUZRuUuKPHmr"
 
-    def fetchPageOfTickets(self, page_no: int) -> tuple[list[Ticket], bool, bool]:
+    def fetchPageOfTickets(self, page_no: int) -> Tuple[List[Ticket], bool, bool]:
         """ Returns the tickets on a specific page and checks whether there is a next page. 
         :param page_no: the page number 1-indexed of the page of tickets.
         :raises HTTPError: if a http error is encountered in the request, i.e. 401, 404, etc.
@@ -51,7 +52,7 @@ class ZendeskController():
         count = response_json["count"]["value"]
         return count
 
-    def fetchAllTickets(self) -> list[Ticket]:
+    def fetchAllTickets(self) -> List[Ticket]:
         """ Returns the tickets from sending a get request to Zendesk API's tickets endpoint.
         :raises HTTPError: if the request encounters a 404, 401, etc. type error.
         :raises RequestException: a catch all for request exceptions.
