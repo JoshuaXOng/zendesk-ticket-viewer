@@ -1,3 +1,4 @@
+import os
 import requests
 from models.ticket import Ticket
 from typing import List, Tuple
@@ -6,8 +7,8 @@ class ZendeskController():
     """ Medaites the retreval and return of JSON data from Zendesk API. """
 
     def __init__(self):
-        self.username = "joshuaong2000@gmail.com/token"
-        self.password = "4gPQcPElcbFL02aqvbvTcxSzKm62oUZRuUuKPHmr"
+        self.username = os.getenv("zd_username")
+        self.password = os.getenv("zd_token")
 
     def fetchPageOfTickets(self, page_no: int) -> Tuple[List[Ticket], bool, bool]:
         """ Returns the tickets on a specific page and checks whether there is are previous/next pages. 
